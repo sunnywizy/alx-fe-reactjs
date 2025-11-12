@@ -14,16 +14,12 @@ function App() {
         <MainContent />
         <Footer />
         <UserProfile 
-          name="Alice Johnson"
+          name="Alice"
           age="25" 
-          bio="An adventurous traveler who always seeks out the best local cuisine in New York, Paris, and Tokyo." 
+          bio="ALoves hiking and photography" 
         />
 
-         <UserProfile 
-          name="Obasi Sunday"
-          age="25" 
-          bio="Learning how work and ReactJs" 
-        />
+        
       </div>
   )
 }
