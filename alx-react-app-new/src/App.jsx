@@ -16,7 +16,8 @@ function App() {
           age="25" 
           bio="ALoves hiking and photography" 
         />
-
+        {/* Counter Component is placed here for interaction */}
+        <Counter /> 
         
       </div>
   )
