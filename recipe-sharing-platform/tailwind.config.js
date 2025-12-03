@@ -1,8 +1,9 @@
- module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
-  darkMode: false, // You can set it to 'media' or 'class' if needed
+/** @type {import('tailwindcss').Config} */
+export default {
+  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+  darkMode: false,
   theme: {
     extend: {},
   },
-  plugins: [],
-};
+  plugins: ["prettier-plugin-tailwindcss"],
+}
