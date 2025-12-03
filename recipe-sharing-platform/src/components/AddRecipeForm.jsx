@@ -1,102 +1,117 @@
-const AddRecipeForm = ({ setRecipes }) => {
-  const [title, setTitle] = useState("");
-  const [ingredients, setIngredients] = useState("");
-  const [steps, setSteps] = useState("");
-  const [errors, setErrors] = useState({});
+import React, { useState } from 'react';
+
+function AddRecipeForm() {
+  const [title, setTitle] = useState('');
+  const [ingredients, setIngredients] = useState('');
+  const [steps, setsteps] = useState('');
+
+  const [errors, setErrors] = useState({
+    title: '',
+    ingredients: '',
+    steps: '',
+  });
+
+  const restFields = () => {
+    setTitle('');
+    setIngredients('');
+    setsteps('');
+    setErrors({
+      title: '',
+      ingredients: '',
+      steps: '',
+    });
+  }
+
+  const validate = () => {
+    let isValid = true;
+    const newErrors = {
+      title: '',
+      ingredients: '',
+      steps: '',
+    };
+
+    if (title.trim() === '') {
+      newErrors.title = 'Title is required.';
+      isValid = false;
+    }
+
+    if (ingredients.trim() === '' || ingredients.split('\n').length < 2) {
+      newErrors.ingredients = 'Please enter at least two ingredients.';
+      isValid = false;
+    }
+
+    if (steps.trim() === '') {
+      newErrors.steps = 'steps are required.';
+      isValid = false;
+    }
+
+    return {isValid, newErrors};
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newErrors = {};
+    const {isValid, newErrors} = validate();
 
-    if (!title.trim()) newErrors.title = "Title is required.";
-    if (!ingredients.trim())
-      newErrors.ingredients = "Ingredients are required.";
-    else if (ingredients.split("\n").filter((i) => i.trim()).length < 2)
-      newErrors.ingredients = "Please enter at least 2 ingredients.";
-    if (!steps.trim()) newErrors.steps = "Preparation steps are required.";
-
-    if (Object.keys(newErrors).length > 0) {
+    if (!isValid) {
       setErrors(newErrors);
       return;
     }
 
-    const newRecipe = {
-      id: Date.now(), // temporary unique ID
-      title,
-      summary: steps.slice(0, 100) + "...", // short summary for HomePage
-      ingredients: ingredients.split("\n"),
-      steps,
-      image: "https://via.placeholder.com/150", // placeholder image
-    };
+    console.log('Form data:', { title, ingredients, steps });
 
-    // Add to shared state
-    setRecipes((prev) => [...prev, newRecipe]);
-
-    // Reset form
-    setTitle("");
-    setIngredients("");
-    setSteps("");
-    setErrors({});
+    restFields();
   };
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-3xl font-bold text-center mb-6">Add New Recipe</h1>
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded-xl p-6"
-      >
-        {/* Title */}
+    <div className="max-w-md mx-auto p-4 bg-white rounded shadow-md">
+      <h2 className="text-2xl font-bold mb-4">Add New Recipe</h2>
+      <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block font-semibold mb-2">Recipe Title</label>
+          <label htmlFor="title" className="block text-sm font-medium text-gray-700">Recipe Title</label>
           <input
             type="text"
+            id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full border p-2 rounded-md"
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
-          {errors.title && (
-            <p className="text-red-500 mt-1">{errors.title}</p>
-          )}
+          {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title}</p>}
         </div>
 
-        {/* Ingredients */}
         <div className="mb-4">
-          <label className="block font-semibold mb-2">Ingredients</label>
+          <label htmlFor="ingredients" className="block text-sm font-medium text-gray-700">Ingredients</label>
           <textarea
+            id="ingredients"
+            rows="4"
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
-            className="w-full border p-2 rounded-md h-28"
-            placeholder="One ingredient per line"
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
-          {errors.ingredients && (
-            <p className="text-red-500 mt-1">{errors.ingredients}</p>
-          )}
+          {errors.ingredients && <p className="mt-1 text-sm text-red-600">{errors.ingredients}</p>}
         </div>
 
-        {/* Steps */}
         <div className="mb-4">
-          <label className="block font-semibold mb-2">Preparation Steps</label>
+          <label htmlFor="steps" className="block text-sm font-medium text-gray-700">Steps</label>
           <textarea
+            id="steps"
+            rows="6"
             value={steps}
-            onChange={(e) => setSteps(e.target.value)}
-            className="w-full border p-2 rounded-md h-32"
+            onChange={(e) => setsteps(e.target.value)}
+            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           />
-          {errors.steps && (
-            <p className="text-red-500 mt-1">{errors.steps}</p>
-          )}
+          {errors.steps && <p className="mt-1 text-sm text-red-600">{errors.steps}</p>}
         </div>
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition"
+          className="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         >
-          Add Recipe
+          Submit
         </button>
       </form>
     </div>
   );
-};
+}
 
 export default AddRecipeForm;
